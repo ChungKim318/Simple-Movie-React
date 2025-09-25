@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "jsx": "react",
+    // "allowJs": true,
+    "checkJs": true,
+    "baseUrl": ".",
+    "paths": {
+      // "~/*": ["./src/*"],
+      "~utils/*": ["./src/utils/*"],
+      "~services/*": ["./src/services/*"],
+      "~hooks/*": ["./src/hooks/*"],
+      "~helpers/*": ["./src/helpers/*"],
+      "~components/*": ["./src/components/*"],
+      "~assets/*": ["./src/assets/*"],
+      "~screens/*": ["./src/screens/*"],
+      "~contexts/*": ["./src/contexts/*"]
+    }
+  },
+  "exclude": ["node_modules", "**/node_modules/*"]
+}
