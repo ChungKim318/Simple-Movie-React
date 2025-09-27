@@ -11,8 +11,8 @@
           "~services": "./src/services/",
           "~helpers": "./src/helpers/",
           "~hooks": "./src/hooks/",
-          "screens": "./src/screens/",
-          "contexts": "./src/contexts/"
+          "~pages": "./src/pages/",
+          "~contexts": "./src/contexts/"
         }
       }
     ]

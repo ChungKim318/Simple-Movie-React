@@ -13,7 +13,7 @@
       "~helpers/*": ["./src/helpers/*"],
       "~components/*": ["./src/components/*"],
       "~assets/*": ["./src/assets/*"],
-      "~screens/*": ["./src/screens/*"],
+      "~pages/*": ["./src/pages/*"],
       "~contexts/*": ["./src/contexts/*"]
     }
   },
