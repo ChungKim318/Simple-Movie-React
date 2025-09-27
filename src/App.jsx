@@ -1,8 +1,6 @@
 import { Fragment } from 'react'
-import { NavLink } from 'react-router'
+import MovieList from '~components/movies/MovieList'
 import MovieCard from '~components/movies/MovieCard'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/css'
 
 function App() {
   return (
@@ -40,80 +38,15 @@ function App() {
       </section>
       <section className="pb-20 movies-layout page-container">
         <h2 className="mb-10 text-3xl font-bold capitalize">Now playing</h2>
-        <div className="movie-list">
-          <Swiper
-            grabCursor={true}
-            spaceBetween={40}
-            slidesPerView={'auto'}
-            centeredSlides={true}>
-            <SwiperSlide>
-              <MovieCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieCard />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieCard />
-            </SwiperSlide>
-          </Swiper>
-        </div>
+        <MovieList />
       </section>
-      <section className="pb-20 movie-layout page-container">
-        <h2 className="mb-10 text-3xl font-bold text-white capitalize">
-          Top rated
-        </h2>
-        <div className="grid grid-cols-4 gap-10 movie-list">
-          <div className="p-3 rounded-lg movie-card bg-slate-800">
-            <img
-              src="https://photo.znews.vn/w660/Uploaded/xbhunku/2019_03_28/avengersendgamepostertophalf.jpg"
-              alt=""
-              className="w-full h-[250px] rounded-lg object-cover mb-5"
-            />
-            <h3 className="mb-3 text-xl font-bold text-white">
-              Spider man: Home coming
-            </h3>
-            <div className="flex items-center justify-between mb-10 text-sm opacity-50">
-              <span>2017</span>
-              <span>7.4</span>
-            </div>
-            <button className="w-full px-6 py-3 capitalize rounded-lg bg-primary">
-              Watch now
-            </button>
-          </div>
-        </div>
+      <section className="pb-20 movies-layout page-container">
+        <h2 className="mb-10 text-3xl font-bold capitalize">Top rated</h2>
+        <MovieList type="top_rated" />
       </section>
-      <section className="pb-20 movie-layout page-container">
-        <h2 className="mb-10 text-3xl font-bold text-white capitalize">
-          Trending
-        </h2>
-        <div className="grid grid-cols-4 gap-10 movie-list">
-          <div className="p-3 rounded-lg movie-card bg-slate-800">
-            <img
-              src="https://photo.znews.vn/w660/Uploaded/xbhunku/2019_03_28/avengersendgamepostertophalf.jpg"
-              alt=""
-              className="w-full h-[250px] rounded-lg object-cover mb-5"
-            />
-            <h3 className="mb-3 text-xl font-bold text-white">
-              Spider man: Home coming
-            </h3>
-            <div className="flex items-center justify-between mb-10 text-sm opacity-50">
-              <span>2017</span>
-              <span>7.4</span>
-            </div>
-            <button className="w-full px-6 py-3 capitalize rounded-lg bg-primary">
-              Watch now
-            </button>
-          </div>
-        </div>
+      <section className="pb-20 movies-layout page-container">
+        <h2 className="mb-10 text-3xl font-bold capitalize">Trending</h2>
+        <MovieList type="popular" />
       </section>
     </Fragment>
   )
