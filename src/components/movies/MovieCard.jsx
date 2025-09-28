@@ -10,7 +10,7 @@ const MovieCard = ({ item }) => {
         className="w-full h-[250px] rounded-lg object-cover mb-5"
       />
       <div className="flex flex-col flex-1">
-        <h3 className="mb-3 text-xl font-bold ">{title}</h3>
+        <h3 className="mb-5 text-xl font-bold">{title}</h3>
         <div className="flex items-center justify-between mb-10 text-sm opacity-50">
           <span>{new Date(release_date).getFullYear()}</span>
           <span>{vote_average}</span>

@@ -1,23 +1,30 @@
-import React, { useEffect, useState } from 'react'
-import MovieCard from './MovieCard'
-import { Swiper, SwiperSlide } from 'swiper/react'
+import React from 'react'
 import 'swiper/css'
+import { Swiper, SwiperSlide } from 'swiper/react'
 import useSWR from 'swr'
 import { fetcher } from '~/config'
+import MovieCard from './MovieCard'
 
 const MovieList = ({ type = 'now_playing' }) => {
-  const [movies, setMovies] = useState([])
+  // const [movies, setMovies] = useState([])
 
   const { data } = useSWR(
     `https://api.themoviedb.org/3/movie/${type}?language=en-US&page=1`,
     fetcher
   )
 
-  useEffect(() => {
-    if (data && data.results) {
-      setMovies(data.results)
-    }
-  }, [data])
+  const movies = data?.results || []
+
+  // useEffect(() => {
+  //   if (data && data.results) {
+  //     setMovies(data.results)
+  //   }
+  // }, [data])
+
+  // useEffect(() => {
+  //   if (!data) return
+  //   setMovies(data.results)
+  // }, [data])
 
   return (
     <div className="movie-list">
