@@ -1,0 +1,159 @@
+import React, { Fragment } from 'react'
+import { useParams } from 'react-router'
+import useSWR from 'swr'
+import { fetcher } from '~/config'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import MovieCard from '~/components/movies/MovieCard'
+
+const MovieDetailPage = () => {
+  const { movieId } = useParams()
+  // console.log('🚀 ~ MovieDetailPage ~ params:', movieId)
+
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
+    fetcher
+  )
+
+  if (!data) return null
+
+  // console.log('🚀 ~ MovieDetailPage ~ data:', data)
+
+  return (
+    <div className="py-10">
+      <div className="w-full h-[600px] relative">
+        <div className="absolute inset-0 bg-black opacity-50"></div>
+        <div
+          className="w-full h-full bg-cover bg-no-repeat"
+          style={{
+            backgroundImage: `url(https://image.tmdb.org/t/p/original/${data?.backdrop_path})`,
+          }}></div>
+      </div>
+      <div className="w-full h-[300px] max-w-[800px] mx-auto -mt-[200px] relative z-10 pb-10">
+        <img
+          src={`https://image.tmdb.org/t/p/original/${data?.poster_path}`}
+          alt=""
+          className="w-full h-full object-cover rounded-lg"
+        />
+      </div>
+      <h1 className="text-center text-4xl font-bold mb-10">{data.title}</h1>
+      {data?.genres.length > 0 && (
+        <div className="flex items-center justify-center gap-x-5 mb-10">
+          {data.genres.map((item, index) => (
+            <span
+              key={item.id + index.toString()}
+              className="px-4 py-2 border border-primary text-primary rounded-md ">
+              {item.name}
+            </span>
+          ))}
+        </div>
+      )}
+      <p className="text-center leading-relaxed max-w-[600px] mx-auto mb-10">
+        {data?.overview}
+      </p>
+      <MovieCredits />
+      <MovieVideos />
+      <MovieSimilar />
+    </div>
+  )
+}
+
+function MovieCredits() {
+  const { movieId } = useParams()
+
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
+    fetcher
+  )
+
+  const cast = data?.cast || []
+
+  if (!cast || cast.length <= 0) return null
+
+  return (
+    <div className="py-10">
+      <h2 className="text-center text-2xl mb-10">Cast</h2>
+      <div className="grid grid-cols-4 gap-5">
+        {cast.slice(0, 4).map((item, index) => (
+          <div className="cast-item" key={item.id + index.toString()}>
+            <img
+              src={`https://image.tmdb.org/t/p/original/${item?.profile_path}`}
+              alt=""
+              className="w-full h-[350px] object-cover rounded-lg"
+            />
+            <h3 className="text-2xl font-medium">{item.name}</h3>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function MovieVideos() {
+  const { movieId } = useParams()
+
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
+    fetcher
+  )
+
+  const videos = data?.results || []
+
+  if (!videos || videos.length <= 0) return null
+  //<iframe width="1236" height="695" src="https://www.youtube.com/embed/b56j7WvwaYM" title="Từng Ngày Yêu Em - buitruonglinh | HÀNH TRÌNH THANH ÂM" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+
+  return (
+    <div className="py-10">
+      <div className="flex flex-col gap-10">
+        {videos.slice(0, 3).map((item, index) => (
+          <div key={item.id + index.toString()}>
+            <h3 className="mb-5 text-xl font-medium p-3 bg-secondary inline-block">
+              {item.name}
+            </h3>
+            <div className="w-full aspect-video">
+              <iframe
+                width="1236"
+                height="695"
+                src={`https://www.youtube.com/embed/${item.key}`}
+                // title={item.name}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="w-full h-full object-fill"></iframe>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function MovieSimilar() {
+  const { movieId } = useParams()
+
+  const { data } = useSWR(
+    `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US`,
+    fetcher
+  )
+
+  const similar = data?.results || []
+
+  if (!similar || similar.length <= 0) return null
+
+  return (
+    <div className="py-10">
+      <h2 className="text-3xl font-medium mb-10">Similar Movies</h2>
+      <div className="movie-list">
+        <Swiper grabCursor={true} spaceBetween={40} slidesPerView={'auto'}>
+          {similar.length > 0 &&
+            similar.map(item => (
+              <SwiperSlide key={item.id}>
+                <MovieCard item={item} />
+              </SwiperSlide>
+            ))}
+        </Swiper>
+      </div>
+    </div>
+  )
+}
+
+export default MovieDetailPage

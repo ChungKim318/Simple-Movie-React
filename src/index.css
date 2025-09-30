@@ -5,6 +5,7 @@
 @theme {
   --font-display: 'DM Sans', sans-serif;
   --color-primary: #f62682;
+  --color-secondary: #6f5cf1;
 }
 
 @layer base {
