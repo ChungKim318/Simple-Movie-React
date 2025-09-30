@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CustomSearch = () => {
+const CustomSearch = ({ onChange = () => {} }) => {
   return (
     <div className="flex mb-10">
       <div className="flex-1">
@@ -8,6 +8,7 @@ const CustomSearch = () => {
           type="text"
           className="w-full p-4 bg-slate-800 outline-none text-white"
           placeholder="Type here to search..."
+          onChange={onChange}
         />
       </div>
       <button className="p-4 bg-primary text-white">
@@ -17,7 +18,7 @@ const CustomSearch = () => {
           viewBox="0 0 24 24"
           strokeWidth="1.5"
           stroke="currentColor"
-          class="size-6">
+          className="w-6 h-6">
           <path
             strokeLinecap="round"
             strokeLinejoin="round"
