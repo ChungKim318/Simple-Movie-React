@@ -1,8 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router'
+import { withErrorBoundary } from 'react-error-boundary'
 import CustomButton from '../CustomButton/CustomButton'
 import { tmdbAPI } from '~/config'
+import LoadingSkeleton from '../loading/LoadingSkeleton'
 
 const MovieCard = ({ item }) => {
   const { title, vote_average, release_date, poster_path, id } = item
@@ -32,6 +34,42 @@ const MovieCard = ({ item }) => {
   )
 }
 
+function FallbackComponent() {
+  return (
+    <p className="bg-red-50 text-red-400">
+      Something went wrong with MovieCard Component
+    </p>
+  )
+}
+
+export const MovieCardSkeleton = () => {
+  return (
+    <div className="p-3 rounded-lg movie-card bg-slate-800 h-full flex flex-col select-none">
+      <LoadingSkeleton
+        width="100%"
+        height="250px"
+        borderRadius="8px"
+        className="mb-5"
+      />
+      <div className="flex flex-col flex-1">
+        <h3 className="mb-3 text-lg font-bold line-clamp-1">
+          <LoadingSkeleton width="100%" height="20px" />
+        </h3>
+
+        <div className="flex items-center justify-between mb-10 text-sm opacity-50">
+          <span>
+            <LoadingSkeleton width="50px" height="10px" />
+          </span>
+          <span>
+            <LoadingSkeleton width="30px" height="10px" />
+          </span>
+        </div>
+        <LoadingSkeleton width="100%" height="45px" borderRadius="6px" />
+      </div>
+    </div>
+  )
+}
+
 MovieCard.propTypes = {
   item: PropTypes.shape({
     title: PropTypes.string,
@@ -42,4 +80,6 @@ MovieCard.propTypes = {
   }),
 }
 
-export default MovieCard
+export default withErrorBoundary(MovieCard, {
+  fallback: <FallbackComponent />,
+})

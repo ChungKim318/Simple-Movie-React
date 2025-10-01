@@ -1,4 +1,5 @@
 import React, { Fragment } from 'react'
+import { withErrorBoundary } from 'react-error-boundary'
 import Banner from '~/components/banner/Banner'
 import MovieList from '~/components/movies/MovieList'
 
@@ -21,5 +22,14 @@ const HomePage = () => {
     </Fragment>
   )
 }
+const FallbackComponent = () => {
+  return (
+    <p className="bg-red-50 text-red-400">
+      Something went wrong with this Component
+    </p>
+  )
+}
 
-export default HomePage
+export default withErrorBoundary(React.memo(HomePage), {
+  fallback: <FallbackComponent />,
+})

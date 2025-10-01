@@ -1,4 +1,7 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { withErrorBoundary } from 'react-error-boundary'
+import LoadingSkeleton from '../loading/LoadingSkeleton'
 
 const CustomSearch = ({ onChange = () => {} }) => {
   return (
@@ -30,4 +33,28 @@ const CustomSearch = ({ onChange = () => {} }) => {
   )
 }
 
-export default React.memo(CustomSearch)
+export const CustomSearchSkeleton = () => {
+  return (
+    <div className="flex mb-10">
+      <div className="flex-1">
+        <LoadingSkeleton width="100%" height="45px" className="p-4" />
+      </div>
+    </div>
+  )
+}
+
+const FallbackComponent = () => {
+  return (
+    <p className="bg-red-50 text-red-400">
+      Something went wrong with this Component
+    </p>
+  )
+}
+
+CustomSearch.propTypes = {
+  onChange: PropTypes.func,
+}
+
+export default withErrorBoundary(React.memo(CustomSearch), {
+  fallback: <FallbackComponent />,
+})
