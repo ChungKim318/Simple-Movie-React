@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import { useParams } from 'react-router'
 import useSWR from 'swr'
-import { fetcher } from '~/config'
+import { fetcher, tmdbAPI } from '~/config'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import MovieCard from '~/components/movies/MovieCard'
 
@@ -9,10 +9,7 @@ const MovieDetailPage = () => {
   const { movieId } = useParams()
   // console.log('🚀 ~ MovieDetailPage ~ params:', movieId)
 
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}?language=en-US`,
-    fetcher
-  )
+  const { data } = useSWR(tmdbAPI.getMovieDetail(movieId), fetcher)
 
   if (!data) return null
 
@@ -25,12 +22,14 @@ const MovieDetailPage = () => {
         <div
           className="w-full h-full bg-cover bg-no-repeat"
           style={{
-            backgroundImage: `url(https://image.tmdb.org/t/p/original/${data?.backdrop_path})`,
+            backgroundImage: `url(${tmdbAPI.imageOriginal(
+              data.backdrop_path
+            )})`,
           }}></div>
       </div>
       <div className="w-full h-[300px] max-w-[800px] mx-auto -mt-[200px] relative z-10 pb-10">
         <img
-          src={`https://image.tmdb.org/t/p/original/${data?.poster_path}`}
+          src={tmdbAPI.imageOriginal(data.poster_path)}
           alt=""
           className="w-full h-full object-cover rounded-lg"
         />
@@ -60,10 +59,7 @@ const MovieDetailPage = () => {
 function MovieCredits() {
   const { movieId } = useParams()
 
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/credits?language=en-US`,
-    fetcher
-  )
+  const { data } = useSWR(tmdbAPI.getMovieMeta(movieId, 'credits'), fetcher)
 
   const cast = data?.cast || []
 
@@ -72,13 +68,13 @@ function MovieCredits() {
   return (
     <div className="py-10">
       <h2 className="text-center text-2xl mb-10">Cast</h2>
-      <div className="grid grid-cols-4 gap-5">
-        {cast.slice(0, 4).map((item, index) => (
+      <div className="grid grid-cols-7 gap-5">
+        {cast.slice(0, 7).map((item, index) => (
           <div className="cast-item" key={item.id + index.toString()}>
             <img
-              src={`https://image.tmdb.org/t/p/original/${item?.profile_path}`}
+              src={tmdbAPI.imageOriginal(item.profile_path)}
               alt=""
-              className="w-full h-[350px] object-cover rounded-lg"
+              className="w-auto h-[350px] object-cover rounded-lg"
             />
             <h3 className="text-2xl font-medium">{item.name}</h3>
           </div>
@@ -91,10 +87,7 @@ function MovieCredits() {
 function MovieVideos() {
   const { movieId } = useParams()
 
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/videos?language=en-US`,
-    fetcher
-  )
+  const { data } = useSWR(tmdbAPI.getMovieMeta(movieId, 'videos'), fetcher)
 
   const videos = data?.results || []
 
@@ -130,10 +123,7 @@ function MovieVideos() {
 function MovieSimilar() {
   const { movieId } = useParams()
 
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${movieId}/similar?language=en-US`,
-    fetcher
-  )
+  const { data } = useSWR(tmdbAPI.getMovieMeta(movieId, 'similar'), fetcher)
 
   const similar = data?.results || []
 

@@ -1,6 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router'
+import CustomButton from '../CustomButton/CustomButton'
+import { tmdbAPI } from '~/config'
 
 const MovieCard = ({ item }) => {
   const { title, vote_average, release_date, poster_path, id } = item
@@ -10,28 +12,34 @@ const MovieCard = ({ item }) => {
   return (
     <div className="p-3 rounded-lg movie-card bg-slate-800 h-full flex flex-col select-none">
       <img
-        src={`https://image.tmdb.org/t/p/original/${poster_path}`}
+        src={tmdbAPI.image500(poster_path)}
         alt=""
         className="w-full h-[250px] rounded-lg object-cover mb-5"
       />
       <div className="flex flex-col flex-1">
-        <h3 className="mb-5 text-xl font-bold">{title}</h3>
+        <h3 className="mb-3 text-lg font-bold line-clamp-1">{title}</h3>
         <div className="flex items-center justify-between mb-10 text-sm opacity-50">
           <span>{new Date(release_date).getFullYear()}</span>
           <span>{vote_average}</span>
         </div>
-        <button
-          className="w-full px-6 py-3 capitalize rounded-lg bg-primary mt-auto"
+        <CustomButton
+          bgColor="secondary"
           onClick={() => navigate(`/movies/${id}`)}>
           Watch now
-        </button>
+        </CustomButton>
       </div>
     </div>
   )
 }
 
 MovieCard.propTypes = {
-  item: PropTypes.object,
+  item: PropTypes.shape({
+    title: PropTypes.string,
+    vote_average: PropTypes.number,
+    release_date: PropTypes.string,
+    poster_path: PropTypes.string,
+    id: PropTypes.number,
+  }),
 }
 
 export default MovieCard

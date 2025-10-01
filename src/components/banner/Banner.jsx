@@ -1,15 +1,14 @@
 import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSWR from 'swr'
-import { fetcher } from '~/config'
+import { fetcher, tmdbAPI } from '~/config'
+import CustomButton from '../CustomButton/CustomButton'
+import { useNavigate } from 'react-router'
 
 const Banner = () => {
   // const [banner, setBanner] = useState([])
 
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/upcoming?language=en-US&page=1`,
-    fetcher
-  )
+  const { data } = useSWR(tmdbAPI.getBanner(), fetcher)
 
   const bannerData = data?.results || []
 
@@ -34,7 +33,8 @@ const Banner = () => {
 }
 
 function BannerItem({ item }) {
-  const { title, backdrop_path } = item
+  const { title, backdrop_path, id } = item
+  const navigate = useNavigate()
   return (
     <div className="relative w-full h-full rounded-lg">
       <div className="overlay absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.5)] to-[rgba(0,0,0,0.5)] rounded-lg"></div>
@@ -56,9 +56,9 @@ function BannerItem({ item }) {
             Adventure
           </span>
         </div>
-        <button className="px-6 py-3 font-medium text-white rounded-lg bg-primary">
+        <CustomButton onClick={() => navigate(`/movies/${id}`)}>
           Watch now
-        </button>
+        </CustomButton>
       </div>
     </div>
   )

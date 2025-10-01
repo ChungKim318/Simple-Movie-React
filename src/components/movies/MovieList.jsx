@@ -2,16 +2,13 @@ import React from 'react'
 import 'swiper/css'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import useSWR from 'swr'
-import { fetcher } from '~/config'
+import { fetcher, tmdbAPI } from '~/config'
 import MovieCard from './MovieCard'
 
 const MovieList = ({ type = 'now_playing' }) => {
   // const [movies, setMovies] = useState([])
 
-  const { data } = useSWR(
-    `https://api.themoviedb.org/3/movie/${type}?language=en-US&page=1`,
-    fetcher
-  )
+  const { data } = useSWR(tmdbAPI.getMovieList(type), fetcher)
 
   const movies = data?.results || []
 
